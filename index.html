@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Demo</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 100px; }
+    input { display: block; margin: 10px auto; padding: 10px; }
+    button { padding: 10px 20px; }
+  </style>
+</head>
+<body>
+
+<h2>Login</h2>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<p id="result"></p>
+
+<script>
+const API_URL = "https://opensheet.elk.sh/SPREADSHEET_ID/Sheet1";
+
+async function login() {
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  const result = document.getElementById("result");
+
+  result.textContent = "Checking...";
+
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    let found = false;
+
+    data.forEach(row => {
+      if (row.Username === user && row.Password === pass) {
+        found = true;
+      }
+    });
+
+    if (found) {
+      result.textContent = "✅ Login successful!";
+      window.location.href = "dashboard.html";
+    } else {
+      result.textContent = "❌ Invalid username or password";
+    }
+
+  } catch (err) {
+    result.textContent = "⚠️ Error connecting to server";
+  }
+}
+</script>
+
+</body>
+</html>
