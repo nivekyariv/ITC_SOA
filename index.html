@@ -43,6 +43,20 @@ async function login() {
     if (found) {
       result.textContent = "✅ Login successful!";
       window.location.href = "soa.html";
+    try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        username: user,
+        newEmail: "Update"
+      })
+    });
+    const text = await response.text();
+    result.textContent = `📤 ${text}`;
+  } catch (err) {
+    console.error(err);
+    result.textContent = "⚠️ Failed to update sheet";
+  }
     } else {
       result.textContent = "❌ Invalid username or password";
     }
