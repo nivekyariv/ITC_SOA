@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Sheets to HTML</title>
+  <style>
+    body { font-family: Arial; margin: 40px; }
+    table { border-collapse: collapse; width: 50%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+
+<h2>User List from Google Sheets</h2>
+
+<table id="sheetData">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Duration</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Data will go here -->
+  </tbody>
+</table>
+
+<script>
+const API_URL = "https://opensheet.elk.sh/16KTIJBWwH8dJ_Tq4NeOW_jpuRvgsur8gKF5_NpDCetI/Sheet2"; // Replace with your ID
+
+async function loadSheetData() {
+  try {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+
+    const tbody = document.querySelector("#sheetData tbody");
+    tbody.innerHTML = ""; // clear existing content
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      // Trim spaces just in case
+      const date = row.Date?.trim() || "";
+      const description = row.Description?.trim() || "";
+      const stime = row.Start_Time?.trim() || "";
+      const etime = row.End_Time?.trim() || "";
+      const duration = row.Duration?.trim() || "";
+      const amount = row.Amount?.trim() || "";
+
+      tr.innerHTML = `
+        <td>${date}</td>
+        <td>${description}</td>
+        <td>${stime}</td>
+        <td>${etime}</td>
+        <td>${duration}</td>
+        <td>${amount}</td>
+      `;
+
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    console.error("Error fetching sheet:", err);
+    const tbody = document.querySelector("#sheetData tbody");
+    tbody.innerHTML = "<tr><td colspan='3'>Failed to load data</td></tr>";
+  }
+}
+
+// Load data on page load
+loadSheetData();
+</script>
+
+</body>
+</html>
